@@ -2,21 +2,20 @@ import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
-import os
+from webdriver_manager.chrome import ChromeDriverManager
 
 @pytest.fixture(scope="function")
 def driver():
     chrome_options = Options()
-    # chrome_options.add_argument("--headless")  # Убрать решётку если хотите видеть браузер
+    # chrome_options.add_argument("--headless")  # Раскомментировать для запуска без GUI
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.add_argument("--disable-gpu")
+    chrome_options.add_argument("--window-size=1920,1080")
     
-    # Путь к chromedriver.exe в текущей папке
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    chromedriver_path = os.path.join(current_dir, "chromedriver.exe")
-    
-    service = Service(executable_path=chromedriver_path)
+    # Используем webdriver-manager для автоматической загрузки драйвера
+    service = Service(ChromeDriverManager().install())
     driver = webdriver.Chrome(service=service, options=chrome_options)
-    driver.maximize_window()
+    
     yield driver
     driver.quit()

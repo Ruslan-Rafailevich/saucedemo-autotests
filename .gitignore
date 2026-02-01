@@ -3,3 +3,9 @@ __pycache__/
 .pytest_cache/
 allure-results/
 chromedriver.exe
+.pytest_cache/
+allure-results/
+allure-report/
+chromedriver.exe
+__pycache__/
+.idea/
